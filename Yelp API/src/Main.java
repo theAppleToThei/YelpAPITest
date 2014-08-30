@@ -15,7 +15,22 @@ public class Main {
 				"KYx8fBlg-6S3RW5lw9-iufnlWvRt9BQL",
 				"3vz32YmOZU4WPqasopZaAVLfsNE");
 		searchForBusinesses(yAPI);
-		System.out.println("Next result? (y/n)");
+		System.out.println("Search again? (y/n)");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String string = "";
+		do {
+			string = br.readLine();
+			if (string.equalsIgnoreCase("y")) {
+				// TODO: Make search for more businesses
+				System.out.println();
+				main(args);
+			} 
+			if (string.equalsIgnoreCase("n")) {
+				System.out.println("Closing...");
+				System.out.println("Closed with system code 0");
+				System.exit(0);
+			}
+		} while (string!="y" || string!="n");
 	}
 
 	private static void searchForBusinesses(YelpAPI yAPI) throws Exception {
@@ -29,7 +44,7 @@ public class Main {
 		System.out.println("Limiting results to: 1 result");
 
 		System.out.println(getName(business));
-		System.out.println(getRating(business));
+//		System.out.println(getRating(business));
 		System.out.print(" stars");
 		System.out.println(business);
 	}
@@ -79,20 +94,21 @@ public class Main {
 				return business.substring(substring1, substring2);
 			}
 		}
-		return "Failed";
+		return "No businesses found...";
 	}
 
 	public static String getRating(String business) {
 		int substring1 = 0;
 		int substring2 = 0;
-		for (int i = 0; i < business.length() - 4; i++) {
-			if (business.substring(i, i + 4).equals("rating")) {
-				substring1 = i + 9;
+		System.out.println(business);
+		for (int i = 0; i < business.length() - 6; i++) {
+			if (business.substring(i, i + 10).equalsIgnoreCase("is_claimed")) {
+				substring1 = i + 29;
 			}
 		}
 		for (int j = substring1; j < business.length() - 7; j++) {
-			if (business.substring(j, j + 10).equals("mobile_url")) {
-				substring2 = j - 3;
+			if (business.substring(j, j + 1).equals(",")) {
+				substring2 = j - 1;
 				return business.substring(substring1, substring2);
 			}
 		}
